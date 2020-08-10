@@ -22,7 +22,6 @@ class Sorter(object):
     归并，选择，冒泡
     通过模拟实验，演示排序耗时和待排数组规模的时间关系
     """
-    g = 0
     def creat_random_list(self, length = 10000, random_list = None):
         """
         初始化一个随机数列表
@@ -47,7 +46,6 @@ class Sorter(object):
         right = self.merge_sort(_list[:length//2])
         left = self.merge_sort(_list[length//2:])
         new_list = self.__merge(right, left)
-        print(self.g)
         return new_list
 
     def __merge(self, right, left):
@@ -61,11 +59,9 @@ class Sorter(object):
         #左右两个都没空时，while循环选个小的，往队列里填元素
         while r < rlength and l < llength:
             if right[r] <= left[l]:
-                self.g += 1
                 new_list.append(right[r])
                 r += 1
             else:
-                self.g += 1
                 new_list.append(left[l])
                 l += 1
         #左右有一个循环完了，直接往队尾增加就行
@@ -110,7 +106,7 @@ class Sorter(object):
             length -= 1#每次排序最大的必会冒到最下面
         return _list
 
-    def get_sort_func_avg_time(self, func, times=1):
+    def get_sort_func_avg_time(self, func, times=3):
         """
         传入排序函数，执行三次，统计平均耗时
         """
@@ -123,7 +119,7 @@ class Sorter(object):
 
     def run_trial(self):
         result_dict = {}
-        self.length_list = [10,100,300,500,1000,2000,5000,10000,50000]
+        self.length_list = [10,100,300,500,1000,2000,5000,10000,20000]
         func_list = [self.bubble_sort, self.selection_sort, self.merge_sort]
         for i in self.length_list:
             self.creat_random_list(i)
@@ -146,21 +142,12 @@ class Sorter(object):
             pylab.plot(x,y)
             tags.append(tag)
         pylab.legend(tags)
+        pylab.xlabel('Array Size')
+        pylab.ylabel('CPU Time')
         pylab.show()
 
 
-
-
-        
-
 if __name__ == "__main__":
     a = Sorter()
-    a.creat_random_list(1000000)
-    s = time.clock()
-    s = a.merge_sort()
-    d = time.clock()
-    print(d-s)
-    # print(s)
-    # b = a.run_trial()
-    # print(b)
-    # a.plot_result()
+    a.run_trial()
+    a.plot_result()
